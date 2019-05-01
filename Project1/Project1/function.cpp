@@ -35,6 +35,7 @@ void DFS(int **arr, int n, int flag = 0) {
 		}
 	}
 	cout << "Finish algorithm" << endl;
+	delete[] nodes;
 }
 
 void BFS(int **arr, int n, int flag=0) {
@@ -60,6 +61,7 @@ void BFS(int **arr, int n, int flag=0) {
 		}
 	}
 	cout << "Finish algorithm" << endl;
+	delete[] nodes;
 }
 
 void dijkstra(int **arr, int n,int index, int flag=0) {
@@ -125,6 +127,7 @@ void dijkstra(int **arr, int n,int index, int flag=0) {
 			}
 			cout << endl;
 		}
+		delete[] ver;
 	}
 	delete[] d;
 	delete[] v;
@@ -168,7 +171,7 @@ void floid_uorshal(int **arr, int n, int flag=0) {
 			ver[0] = end + 1;
 			int k = 1;
 			int weight = d[index][end];
-			while (end > index) {
+			while (end > index+1) {
 				for (int i = 0; i < n; i++) {
 					if (arr[end][i] != 0) {
 						int temp = weight - arr[end][i];
@@ -188,6 +191,7 @@ void floid_uorshal(int **arr, int n, int flag=0) {
 				}
 				cout << endl;
 			}
+			delete[] ver;
 		}
 	}
 	cout << "Finish algorithm" << endl;
@@ -216,7 +220,7 @@ void bellman(int **arr,vector<edge> e, int n, int index, int flag=0) {
 		if (!any) break;
 	}
 	
-	for (int o = index+1; o < n; o++) {
+	for (int o = index; o < n; o++) {
 		end = o;
 		if (d[end] == INF) {
 			cout << "No path from v" << index << " to v" << end << "." << endl;
@@ -247,9 +251,10 @@ void bellman(int **arr,vector<edge> e, int n, int index, int flag=0) {
 			}
 			cout << endl;
 		}
+		delete[] ver;
 	}
-	d.clear();
-	p.clear();
+	vector<int>().swap(d);
+	vector<int>().swap(p);
 }
 
 
@@ -358,10 +363,14 @@ void last_task() {
 	cout << endl;
 	BFS(arr, i);
 	cout << endl;*/
-	dijkstra_ready(arr, i);
-	floid_uorshal(arr, i);
-	bellman_ready(arr, E, i);
-
+	//dijkstra_ready(arr, i);
+	bellman_ready(arr, E, i,1);
+	//floid_uorshal(arr, i);
+	for (int j = 0; j < i; j++) {
+		delete[] arr[j];
+	}
+	delete[] arr;
+	vector<edge>().swap(E);
 }
 
 int main() {
