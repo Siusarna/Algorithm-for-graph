@@ -1,7 +1,8 @@
 #include <iostream>
-#include "windows.h";+
+#include "windows.h"
 #include <vector>
 #include <stack>
+#include <ctime>
 #include <queue>
 using namespace std;
 
@@ -95,7 +96,7 @@ void dijkstra(int **arr, int n,int index, int flag=0) {
 
 	for (int o = index; o < n; o++) {
 		end = o;
-		if (d[end] == 10000 && flag == 1) {
+		if (d[end] == 10000) {
 			cout << "No path from v" << index << " to v" << end << "." << endl;
 			continue;
 		}
@@ -125,6 +126,8 @@ void dijkstra(int **arr, int n,int index, int flag=0) {
 			cout << endl;
 		}
 	}
+	delete[] d;
+	delete[] v;
 }
 
 void floid_uorshal(int **arr, int n, int flag=0) {
@@ -141,10 +144,10 @@ void floid_uorshal(int **arr, int n, int flag=0) {
 		}
 	}
 	for (int k = 0; k < n; k++) {
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < n; i++) {			
 			for (int j = 0; j < n; j++) {
-				if (d[i][k] < INF && d[k][j] < INF)
-					d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
+				if (d[i][j] > d[i][k] + d[k][j])
+					d[i][j] = d[i][k] + d[k][j];
 			}
 		}
 	}
@@ -156,7 +159,7 @@ void floid_uorshal(int **arr, int n, int flag=0) {
 		for (int w = q + 1; w < n; w++) {
 			index = q;
 			end = w;
-			if (d[index][end] == INF && flag == 1) {
+			if (d[index][end]== INF ) {
 				cout << "No path from v" << index << " to v" << end << "." << endl;
 				continue;
 			}
@@ -188,27 +191,34 @@ void floid_uorshal(int **arr, int n, int flag=0) {
 		}
 	}
 	cout << "Finish algorithm" << endl;
+	cout << endl;
+	for (int i = 0; i < n; i++) {
+		delete[] d[i];
+	}
+	delete[] d;
 }
 
 void bellman(int **arr,vector<edge> e, int n, int index, int flag=0) {
-	cout << endl;
 	int INF = 9999999;
 	vector<int> d(n, INF);
 	d[index] = 0;
 	vector<int> p(n, -1);
 	int end;
-	for (int i =0 ;i<n-1 ;++i) {
+	for (; ;) {
+		bool any = false;
 		for (int j = 0; j < e.size(); ++j) {
-			if (d[e[j].a] < INF) {
-				d[e[j].b] = min(d[e[j].b], d[e[j].a] + e[j].cost);
+			if (d[e[j].b] > d[e[j].a] + e[j].cost) {
+				d[e[j].b] = d[e[j].a] + e[j].cost;
+				any = true;
 				p[e[j].b] = e[j].a;
 			}
 		}
+		if (!any) break;
 	}
 	
-	for (int o = index; o < n; o++) {
+	for (int o = index+1; o < n; o++) {
 		end = o;
-		if (d[end] == INF && flag == 1) {
+		if (d[end] == INF) {
 			cout << "No path from v" << index << " to v" << end << "." << endl;
 			continue;
 		}
@@ -238,6 +248,8 @@ void bellman(int **arr,vector<edge> e, int n, int index, int flag=0) {
 			cout << endl;
 		}
 	}
+	d.clear();
+	p.clear();
 }
 
 
@@ -309,26 +321,43 @@ void my_variant() {
 }
 
 void last_task() {
-	int i = 10;
+	int i = 1000;
 	vector<edge> E;
 	edge temp;
 	int **arr = new int*[i];
 	for (int j = 0; j < i; j++) {
 		arr[j] = new int[i];
+		for (int u = 0; u < i; u++) {
+			arr[j][u] = 0;
+		}
 	}
-
 	for (int j = 0; j < 5*i; j++) {
 		temp.a = rand() % i;
 		temp.b = rand() % i;
 		temp.cost = rand() % 200;
-		E.push_back(temp);
 		arr[temp.a][temp.b] = temp.cost;
 		arr[temp.b][temp.a] = temp.cost;
 	}
-	DFS(arr, i);
+	for (int u = 0; u < i; u++) {
+		for (int j = 0; j < i; j++) {
+			if (arr[u][j] != 0) {
+				temp.a = u;
+				temp.b = j;
+				temp.cost = arr[u][j];
+				E.push_back(temp);
+			}
+		}
+	}
+	/*for (int u= 0; u < i; u++) {
+		for (int k = 0; k < i; k++) {
+			cout<<arr[u][k]<<" ";
+		}
+		cout << endl;
+	}*/
+	/*DFS(arr, i);
 	cout << endl;
 	BFS(arr, i);
-	cout << endl;
+	cout << endl;*/
 	dijkstra_ready(arr, i);
 	floid_uorshal(arr, i);
 	bellman_ready(arr, E, i);
@@ -336,10 +365,12 @@ void last_task() {
 }
 
 int main() {
+	srand(time(NULL));
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
-	my_variant();
+	//my_variant();
 	last_task();
+	cout << endl;
 	system("pause");
 
  

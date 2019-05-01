@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="funciot.cpp">
+    <ClCompile Include="function.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
   </ItemGroup>
