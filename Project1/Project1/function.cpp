@@ -379,7 +379,6 @@ void last_task() {
 	for (int i = 1000; i < 3000; i += 100) {
 		vector<edge> E;
 		int **arr = create_graph(E, i);
-		
 		/*for (int u= 0; u < i; u++) {
 			for (int k = 0; k < i; k++) {
 				cout<<arr[u][k]<<" ";
@@ -393,8 +392,6 @@ void last_task() {
 		for (int j = 0; j < i; j++) {
 			BFS(arr, i, j);
 		}*/
-		DFS(arr, i, 0);
-		BFS(arr, i, 0);
 		dijkstra_ready(arr, i);
 		floid_uorshal(arr, i);
 		bellman_ready(arr, E, i);
