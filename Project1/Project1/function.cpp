@@ -11,14 +11,14 @@ struct  edge
 	int a, b, cost;
 };
 
-void DFS(int **arr, int n, int flag = 0) {
+void DFS(int **arr, int n,int index, int flag = 0) {
 	cout <<"DFS"<< endl;
 	stack<int> s;
 	int *nodes = new int[n];
 	for (int i = 0; i < n; i++) {
 		nodes[i] = 0;
 	}
-	s.push(0);
+	s.push(index);
 	while (!s.empty()) {
 		int node = s.top();
 		s.pop();
@@ -38,14 +38,14 @@ void DFS(int **arr, int n, int flag = 0) {
 	delete[] nodes;
 }
 
-void BFS(int **arr, int n, int flag=0) {
+void BFS(int **arr, int n,int index,int flag=0) {
 	cout << "BFS"<< endl;
 	queue<int> s;
 	int *nodes = new int[n];
 	for (int i = 0; i < n; i++) {
 		nodes[i] = 0;
 	}
-	s.push(0);
+	s.push(index);
 	while (!s.empty()) {
 		int node = s.front();
 		s.pop();
@@ -330,9 +330,13 @@ void my_variant() {
 			}
 		}
 	}
-	DFS(arr, n,1);
+	for (int i = 0; i < n; i++) {
+		DFS(arr, n, i,1);
+	}
 	cout << endl;
-	BFS(arr, n,1);
+	for (int i = 0; i < n; i++) {
+		BFS(arr, n,i, 1);
+	}
 	cout << endl;
 	dijkstra_ready(arr, n,1);
 	floid_uorshal(arr, n,1);
@@ -340,47 +344,59 @@ void my_variant() {
 
 }
 
-void last_task() {
-	for (int i = 0; i < 20000; i += 1000) {
-		int a, b, cost;
-		vector<edge> E;
-		edge temp;
-		int **arr = new int*[i];
-		for (int j = 0; j < i; j++) {
-			arr[j] = new int[i];
-			for (int u = 0; u < i; u++) {
-				arr[j][u] = 0;
-			}
-		}
-		for (int j = 0; j < 3 * i; j++) {
-			a = rand() % i;
-			b = rand() % i;
-			cost = rand() % 200;
-			arr[a][b] = cost;
-			arr[b][a] = cost;
-		}
+int  **create_graph(vector<edge> &E, int i) {
+	edge temp;
+	int a, b, cost;
+	int k = rand() % (2 * i) + i * 3;
+	int **arr = new int*[i];
+	for (int j = 0; j < i; j++) {
+		arr[j] = new int[i];
 		for (int u = 0; u < i; u++) {
-			for (int j = 0; j < i; j++) {
-				if (arr[u][j] != 0) {
-					temp.a = u;
-					temp.b = j;
-					temp.cost = arr[u][j];
-					E.push_back(temp);
-				}
+			arr[j][u] = 0;
+		}
+	}
+	for (int j = 0; j < k; j++) {
+		a = rand() % i;
+		b = rand() % i;
+		cost = rand() % 200;
+		arr[a][b] = cost;
+		arr[b][a] = cost;
+	}
+	for (int u = 0; u < i; u++) {
+		for (int j = 0; j < i; j++) {
+			if (arr[u][j] != 0) {
+				temp.a = u;
+				temp.b = j;
+				temp.cost = arr[u][j];
+				E.push_back(temp);
 			}
 		}
+	}
+	return arr;
+}
+
+void last_task() {
+	for (int i = 1000; i < 3000; i += 100) {
+		vector<edge> E;
+		int **arr = create_graph(E, i);
+		
 		/*for (int u= 0; u < i; u++) {
 			for (int k = 0; k < i; k++) {
 				cout<<arr[u][k]<<" ";
 			}
 			cout << endl;
-		}*/
-		/*DFS(arr, i);
+		}
+		for (int j = 0; j < i; j++) {
+			DFS(arr, i, j);
+		}
 		cout << endl;
-		BFS(arr, i);
-		cout << endl;*/
-		//dijkstra_ready(arr, i);
-		//floid_uorshal(arr, i);
+		for (int j = 0; j < i; j++) {
+			BFS(arr, i, j);
+		}*/
+		DFS(arr, i, 0);
+		BFS(arr, i, 0);
+		dijkstra_ready(arr, i);
+		floid_uorshal(arr, i);
 		bellman_ready(arr, E, i);
 		for (int j = 0; j < i; j++) {
 			delete[] arr[j];
