@@ -392,6 +392,9 @@ void last_task() {
 		for (int j = 0; j < i; j++) {
 			BFS(arr, i, j);
 		}*/
+		cout << endl;
+		cout << (double)i/1000 << endl;
+		cout << endl;
 		dijkstra_ready(arr, i);
 		floid_uorshal(arr, i);
 		bellman_ready(arr, E, i);
