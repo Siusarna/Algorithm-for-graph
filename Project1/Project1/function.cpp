@@ -161,7 +161,7 @@ void floid_uorshal(int **arr, int n, int flag=0) {
 		d[i][i] = 0;
 	}
 	for (int q = 0; q < n; q++) {
-		for (int w = q + 1; w < n; w++) {
+		for (int w = q ; w < n; w++) {
 			index = q;
 			end = w;
 			if (d[index][end]== INF ) {
@@ -170,17 +170,17 @@ void floid_uorshal(int **arr, int n, int flag=0) {
 			}
 			int *ver = new int[n];
 			int saveEnd = end;
-			ver[0] = end + 1;
+			ver[0] = end+1;
 			int k = 1;
 			int weight = d[index][end];
-			while (end > index+1) {
+			while (end > index) {
 				for (int i = 0; i < n; i++) {
 					if (arr[end][i] != 0) {
 						int temp = weight - arr[end][i];
 						if (temp == d[index][i]) {
 							weight = temp;
 							end = i;
-							ver[k] = i + 1;
+							ver[k] = i+1;
 							k++;
 						}
 					}
@@ -189,7 +189,7 @@ void floid_uorshal(int **arr, int n, int flag=0) {
 			if (flag == 1) {
 				cout << "Найкоротший шлях з v" << index << " до v" << saveEnd << endl;
 				for (int i = k - 1; i >= 0; i--) {
-					cout << ver[i] - 1 << " ";
+					cout << ver[i]-1 << " ";
 				}
 				cout << endl;
 			}
@@ -330,13 +330,13 @@ void my_variant() {
 			}
 		}
 	}
-	for (int i = 0; i < n; i++) {
+	/*for (int i = 0; i < n; i++) {
 		DFS(arr, n, i,1);
 	}
 	cout << endl;
 	for (int i = 0; i < n; i++) {
 		BFS(arr, n,i, 1);
-	}
+	}*/
 	cout << endl;
 	dijkstra_ready(arr, n,1);
 	floid_uorshal(arr, n,1);
@@ -376,7 +376,7 @@ int  **create_graph(vector<edge> &E, int i) {
 }
 
 void last_task() {
-	for (int i = 1000; i < 3000; i += 100) {
+	for (int i = 2900; i < 3000; i += 100) {
 		vector<edge> E;
 		int **arr = create_graph(E, i);
 		/*for (int u= 0; u < i; u++) {
@@ -384,14 +384,14 @@ void last_task() {
 				cout<<arr[u][k]<<" ";
 			}
 			cout << endl;
-		}
+		}*/
 		for (int j = 0; j < i; j++) {
 			DFS(arr, i, j);
 		}
 		cout << endl;
 		for (int j = 0; j < i; j++) {
 			BFS(arr, i, j);
-		}*/
+		}
 		cout << endl;
 		cout << (double)i/1000 << endl;
 		cout << endl;
@@ -410,8 +410,8 @@ int main() {
 	srand(time(NULL));
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
-	//my_variant();
-	last_task();
+	my_variant();
+	//last_task();
 	cout << endl;
 	system("pause");
 
